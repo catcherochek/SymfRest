@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Service\FileService;
+use App\Service\HttpService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 
 use Buzz\Client\FileGetContents;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -25,17 +28,11 @@ class DefaultIndexController extends AbstractController
 
     /**
      * @Route("/tests")
+     *
      */
-    public function tests(){
-
-
-        $request = new Request('GET', 'https://google.com');
-        $client = new FileGetContents(new Psr17Factory(), ['allow_redirects' => true]);
-        $response = $client->sendRequest($request, ['timeout' => 4]);
-
-        return
-           new Response( $response->getBody());
-
+    public function tests(FileService $service){
+        //$service->write("ffs","sdfsdfsdaf");
+        return new Response($service->read("ffs"));
     }
 
 
