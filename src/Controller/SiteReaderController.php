@@ -67,7 +67,7 @@ class SiteReaderController extends FOSRestController
         ]);
     }
 
-    /**
+    /**route for vue
      * @Rest\Get("/readp", name="site_readerp")
      */
     public function index_post(Request $request){
