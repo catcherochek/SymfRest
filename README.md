@@ -3,4 +3,4 @@ Symfony REST App Parser Quiz
 
 run composer install
 
-after navigate with /readp  to get json
+after navigate with /readp  to get data
