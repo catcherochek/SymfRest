@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use App\Service\FileService;
 use App\Service\HttpService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,9 +22,10 @@ class SiteReaderController extends FOSRestController
      */
     public function index(FileService $fs, HttpService $ht)
     {
+		
         $gcs = "fobj5";
         $out = $fs->read($gcs);
-
+		//echo serialize($out);
         if ($out){
             return $this->json($out);
         }
@@ -47,6 +50,17 @@ class SiteReaderController extends FOSRestController
             $fs->write($gcs,$out);
             return $this->json($out);
         }
+		
+		
+		
+
+		$app->after(function (Request $request, Response $response) {
+			   $response->headers->set('Content-Type', 'application/json');
+				$response->headers->set("Access-Control-Allow-Headers", "Content-Type");
+				$response->headers->set("Access-Control-Allow-Origin", "*");
+			
+		});
+		
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/SiteReaderController.php',
@@ -54,10 +68,13 @@ class SiteReaderController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("/readp", name="site_readerp")
+     * @Rest\Get("/readp", name="site_readerp")
      */
     public function index_post(Request $request){
-        return $this->json([
+		//$html = render_template('templates/show.php', ['post' => $post]);
+		//$this->render('vue/index.html');
+		return new Response(file_get_contents('vue.html'));
+	   return $this->json([
             'req' => $request->get('myval'),
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/SiteReaderController.php',
